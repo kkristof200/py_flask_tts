@@ -53,4 +53,13 @@ def ping():
     return 'pong'
 
 
+def start_tts_server(
+    host: str = '0.0.0.0',
+    port: int = 5005,
+    debug: bool = False
+) -> None:
+    app.debug = debug
+    app.run(host=host, port=port)
+
+
 # ---------------------------------------------------------------------------------------------------------------------------------------- #

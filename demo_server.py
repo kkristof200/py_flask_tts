@@ -1,5 +1,10 @@
-from flasktts.server import app
+from flasktts.server import start_tts_server
+from flasktts.constants import Constants
 
-if __name__ == '__main__':
-    app.debug = True
-    app.run(host = 'localhost',port=5005)
+Constants.SECRET_KEY = 'test'
+
+start_tts_server(
+    host='localhost',
+    port=5005,
+    debug=True,
+)

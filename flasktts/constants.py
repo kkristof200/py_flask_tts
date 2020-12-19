@@ -1,1 +1,2 @@
-SECRET_KEY = 'haha'
+class Constants:
+    SECRET_KEY = 'haha'

@@ -1,5 +1,9 @@
 from flasktts.text_to_speech import TextToSpeech
 
+from flasktts.constants import Constants
+
+Constants.SECRET_KEY = 'test'
+
 TextToSpeech.text_to_speech(
     text='This is a test.',
     path='test.aac',
