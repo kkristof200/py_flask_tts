@@ -29,8 +29,6 @@ def get_temp_path(extension: str) -> str:
         append_random_subfolder_path=False
     )
 
-    print('temp_dir', temp_dir)
-
     os.makedirs(temp_dir, exist_ok=True)
     return os.path.join(temp_dir, '{}.{}'.format(uuid.uuid4(), extension.lstrip('.')))
 
