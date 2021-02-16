@@ -56,14 +56,16 @@ def tts():
 
     if os.path.exists(audio_path):
         try:
-            return send_file(
+            res = send_file(
                 audio_path,
                 attachment_filename=audio_path.split(os.sep)[-1]
             )
         except Exception as e:
-            return str(e), 400
+            res = str(e), 400
 
         os.remove(audio_path)
+
+        return res
     else:
         return 'Could not create tts', 400
 

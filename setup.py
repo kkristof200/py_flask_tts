@@ -9,7 +9,7 @@ else:
 
 setuptools.setup(
     name="flasktts",
-    version="0.0.4",
+    version="0.0.5",
     author="Kristof",
     description="flasktts",
     long_description=long_description,
