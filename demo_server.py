@@ -1,7 +1,6 @@
-from flasktts.server import start_tts_server
-from flasktts.constants import Constants
+from flasktts import start_tts_server, Secret
 
-Constants.SECRET_KEY = 'test'
+Secret.KEY = 'OVERRIDE_SECRET_KEY'
 
 start_tts_server(
     host='localhost',

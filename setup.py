@@ -9,14 +9,20 @@ else:
 
 setuptools.setup(
     name="flasktts",
-    version="0.0.2",
+    version="0.0.3",
     author="Kristof",
     description="flasktts",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/kkristof200/py_flask_tts",
     packages=setuptools.find_packages(),
-    install_requires=["kcu", "kffmpeg", "Unidecode", "pyttsx3", "Flask"],
+    install_requires=[
+        'Flask>=1.1.2',
+        'kcu>=0.0.61',
+        'kffmpeg>=0.2.39',
+        'pyttsx3>=2.90',
+        'Unidecode>=1.2.0'
+    ],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
