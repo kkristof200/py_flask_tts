@@ -6,7 +6,7 @@ import os, shutil
 
 # Pip
 from unidecode import unidecode
-from kcu import request, kpath
+from kcu import request, kpath, sh
 import pyttsx3
 from kffmpeg import ffmpeg
 
@@ -37,7 +37,7 @@ class TextToSpeech:
         text = unidecode(text.strip())
 
         if address and not address.startswith(Constants.ADDRESS_PREFIX):
-            address = '{}{}'.format(Constants.ADDRESS_PREFIX, address)
+            address = f'{Constants.ADDRESS_PREFIX}{address}'
 
         if not address and voice_id and voice_id.startswith(Constants.ADDRESS_PREFIX):
             address = voice_id
@@ -72,23 +72,30 @@ class TextToSpeech:
         words_per_minute: Optional[int] = None,
         debug: bool = False
     ) -> bool:
-        temp_path = get_temp_path(Constants.LOCAL_AUDIO_EXTENSION)
+        if voice_id.startswith('coqui-ai/'):
+            text = text.replace('"', '\\"')
+            temp_path = get_temp_path('wav')
+            # coqui-ai/tts_models/en/ljspeech/tacotron2-DDC
+            voice_id = voice_id.replace('coqui-ai/', '')
+            sh.sh(f'tts --text "{text}" --out_path {temp_path}')
+            ffmpeg.simple_reencode(temp_path, temp_path.replace('.wav', '.aiff'))
+        else:
+            temp_path = get_temp_path(Constants.LOCAL_AUDIO_EXTENSION)
+            engine = pyttsx3.init()
+            engine.setProperty('voice', voice_id)
 
-        engine = pyttsx3.init()
-        engine.setProperty('voice', voice_id)
+            if words_per_minute:
+                engine.setProperty('rate', words_per_minute)
 
-        if words_per_minute:
-            engine.setProperty('rate', words_per_minute)
-
-        engine.save_to_file(text=text, filename=temp_path)
-        engine.runAndWait()
+            engine.save_to_file(text=text, filename=temp_path)
+            engine.runAndWait()
 
         if not os.path.exists(temp_path):
             return False
 
         if path.endswith('.mp3'):
             ffmpeg.reencode_mp3(temp_path, path, debug=False)
-        elif path.endswith(Constants.LOCAL_AUDIO_EXTENSION):
+        elif path.endswith(Constants.LOCAL_AUDIO_EXTENSION) or path.endswith('.wav'):
             shutil.copy2(temp_path, path)
         else:
             ffmpeg.reencode_aac(temp_path, path, debug=False)
