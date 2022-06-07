@@ -81,7 +81,7 @@ class TextToSpeech:
     ) -> bool:
         if voice_id.startswith('coqui-ai/'):
             print('BEFORE:', text)
-            text = cls.__normalize_text.replace('"', '\\"')
+            text = cls.__normalize_text(text)
             print('AFTER: ', text)
 
             temp_path = get_temp_path('wav')
