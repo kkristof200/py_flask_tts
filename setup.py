@@ -9,7 +9,7 @@ else:
 
 setuptools.setup(
     name="flasktts",
-    version="0.0.7",
+    version="0.0.8",
     author="Kristof",
     description="flasktts",
     long_description=long_description,
@@ -19,7 +19,7 @@ setuptools.setup(
     install_requires=[
         'fastpunct>=2.0.2',
         'Flask>=1.1.2',
-        'kcu>=0.0.73',
+        'kcu>=0.0.83',
         'kffmpeg>=0.2.46',
         'pyttsx3>=2.90',
         'setuptools>=62.3.2',

@@ -80,7 +80,10 @@ class TextToSpeech:
         debug: bool = False
     ) -> bool:
         if voice_id.startswith('coqui-ai/'):
+            print('BEFORE:', text)
             text = cls.__normalize_text.replace('"', '\\"')
+            print('AFTER: ', text)
+
             temp_path = get_temp_path('wav')
             # coqui-ai/tts_models/en/ljspeech/tacotron2-DDC
             voice_id = voice_id.replace('coqui-ai/', '')
