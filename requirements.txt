@@ -1,3 +1,4 @@
+fastpunct==2.0.2
 Flask==1.1.2
 kcu==0.0.73
 kffmpeg==0.2.46

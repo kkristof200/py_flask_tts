@@ -2,13 +2,15 @@
 
 # System
 from typing import Optional
-import os, shutil
+import os, shutil, re
+from string import punctuation
 
 # Pip
 from unidecode import unidecode
 from kcu import request, kpath, sh
 import pyttsx3
 from kffmpeg import ffmpeg
+from fastpunct import FastPunct
 
 # Local
 from ._constants import Constants, Keys
@@ -22,6 +24,9 @@ from ._utils import sign, get_temp_path
 
 class TextToSpeech:
 
+    fastpunct = FastPunct()
+
+
     # -------------------------------------------------------- Public methods -------------------------------------------------------- #
 
     @classmethod
@@ -34,6 +39,7 @@ class TextToSpeech:
         words_per_minute: Optional[int] = None,
         debug: bool = False
     ) -> bool:
+        cls.fastpunct
         text = unidecode(text.strip())
 
         if address and not address.startswith(Constants.ADDRESS_PREFIX):
@@ -64,8 +70,9 @@ class TextToSpeech:
 
     # ------------------------------------------------------- Private methods -------------------------------------------------------- #
 
-    @staticmethod
+    @classmethod
     def __tts_local(
+        cls,
         text: str,
         path: str,
         voice_id: str,
@@ -73,7 +80,7 @@ class TextToSpeech:
         debug: bool = False
     ) -> bool:
         if voice_id.startswith('coqui-ai/'):
-            text = text.replace('"', '\\"')
+            text = cls.__normalize_text.replace('"', '\\"')
             temp_path = get_temp_path('wav')
             # coqui-ai/tts_models/en/ljspeech/tacotron2-DDC
             voice_id = voice_id.replace('coqui-ai/', '')
@@ -140,6 +147,23 @@ class TextToSpeech:
             f.write(response.content)
 
         return os.path.exists(path)
+
+
+    @classmethod
+    def __normalize_text(
+        cls,
+        s: str
+    ):
+        for c in punctuation:
+            d = 2*c
+
+            while d in s:
+                s = s.replace(d, c)
+
+        s = re.sub(r'(?<=[.,])(?=[^\s])', r' ', s)
+        s = re.sub(r'\s([?.!"](?:\s|$))', r'\1', s)
+
+        return cls.fastpunct.punct(s).replace('"', '\\"')
 
 
 # ---------------------------------------------------------------------------------------------------------------------------------------- #

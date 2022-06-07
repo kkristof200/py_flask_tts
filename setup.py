@@ -9,7 +9,7 @@ else:
 
 setuptools.setup(
     name="flasktts",
-    version="0.0.6",
+    version="0.0.7",
     author="Kristof",
     description="flasktts",
     long_description=long_description,
@@ -17,6 +17,7 @@ setuptools.setup(
     url="https://github.com/kkristof200/py_flask_tts",
     packages=setuptools.find_packages(),
     install_requires=[
+        'fastpunct>=2.0.2',
         'Flask>=1.1.2',
         'kcu>=0.0.73',
         'kffmpeg>=0.2.46',
